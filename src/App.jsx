@@ -56,9 +56,9 @@ const App = () => {
 
     const newImages = Array.from(uploadedFiles).map((file, index) => {
       const id = galleryProducts.length + index + 1;
-      const thumbnail = URL.createObjectURL(file);
+      const imageURL = URL.createObjectURL(file);
 
-      return { id, thumbnail };
+      return { id, imageURL };
     });
 
     setGalleryProducts([...galleryProducts, ...newImages]);
