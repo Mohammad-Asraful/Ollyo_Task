@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useState } from "react";
 import products from "./image";
 import { BiImage } from "react-icons/bi";
@@ -71,11 +70,13 @@ const App = () => {
         {/* Wrapping div start */}
         <div className="bg-[#F7F7F7] p-2">
           {/* header div start */}
-          <div className="flex justify-between bg-white py-3 px-5 rounded-t-md">
+          <div className="flex justify-between items-center bg-white py-3 px-5 rounded-t-md">
             <div>
               {selectedImages.length >= 1 ? (
-                <label htmlFor="Selection">
-                  <input defaultChecked type="checkbox" />
+                <label
+                  htmlFor="Selection"
+                  className="font-bold text-xs sm:text-base md:text-lg lg:text-2xl">
+                  <input className="w-5 h-5" defaultChecked type="checkbox" />
                   {" " + selectedImages.length} File Selected
                 </label>
               ) : (
@@ -87,7 +88,7 @@ const App = () => {
               onClick={deleteProduct}
               className={`${
                 selectedImages.length >= 1 ? "block" : "hidden"
-              } text-red-500 font-semibold hover:underline`}>
+              } text-red-500 font-semibold text-xs sm:text-base md:text-lg lg:text-2xl hover:underline`}>
               {selectedImages.length > 1 ? "Delete files" : "Delete file"}
             </button>
             {/* delete files button end */}
@@ -112,8 +113,8 @@ const App = () => {
                   onDrop={() => handleDropProduct(index)}>
                   <div
                     className={`relative ${
-                      selectedImages.length >= 1
-                        ? "[&>input]:block"
+                      selectedImages.find((photo) => photo.id === product.id)
+                        ? "[&>input]:block opacity-40"
                         : "[&>input]:hidden"
                     } [&>input]:hover:block [&>img]:hover:opacity-30 rounded-md bg-gray-700`}>
                     <img
@@ -123,7 +124,7 @@ const App = () => {
                     />
                     <input
                       type="checkbox"
-                      className="absolute top-2 left-2"
+                      className="w-6 h-6 absolute top-2 left-2"
                       checked={selectedImages.includes(product)}
                       onChange={() => toggleImageSelection(product)}
                     />
