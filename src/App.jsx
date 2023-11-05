@@ -87,8 +87,8 @@ const App = () => {
               onClick={deleteProduct}
               className={`${
                 selectedImages.length >= 1 ? "block" : "hidden"
-              } text-red-600 font-semibold`}>
-              Delete files
+              } text-red-500 font-semibold hover:underline`}>
+              {selectedImages.length > 1 ? "Delete files" : "Delete file"}
             </button>
             {/* delete files button end */}
           </div>
@@ -99,7 +99,7 @@ const App = () => {
           {/* hr line end */}
 
           {/* Images div start */}
-          <div className="grid grid-cols-5 gap-5 bg-white py-3 px-5 rounded-b-md [&>*:first-child]:row-span-2 [&>*:first-child]:col-span-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 bg-white py-3 px-5 rounded-b-md [&>*:first-child]:row-span-2 [&>*:first-child]:col-span-2">
             {/* image */}
             {galleryProducts.map((product, index) => {
               return (
@@ -135,7 +135,7 @@ const App = () => {
 
             {/* file upload input start*/}
             <div>
-              <div className="relative border-2 border-dashed rounded-md p-4 hover:bg-gray-50 transition-colors ease-linear">
+              <div className="relative border-2 border-dashed rounded-md p-4 hover:bg-gray-50 transition-colors ease-linear h-full">
                 <input
                   type="file"
                   multiple
@@ -145,7 +145,9 @@ const App = () => {
                 />
                 <div className="h-full w-full flex flex-col justify-center items-center gap-4">
                   <BiImage />
-                  <span className="min-w-max">Add Images</span>
+                  <span className="min-w-max text-xs sm:text-base md:text-lg lg:text-2xl">
+                    Add Images
+                  </span>
                 </div>
               </div>
             </div>
