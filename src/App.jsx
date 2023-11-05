@@ -1,7 +1,10 @@
+/* eslint-disable */
 import { useState } from "react";
 import products from "./image";
+import { BiImage } from "react-icons/bi";
 
 const App = () => {
+  /* Product selection logic start */
   const [selectedImages, setSelectedImages] = useState([]);
 
   const toggleImageSelection = (product) => {
@@ -11,9 +14,57 @@ const App = () => {
       setSelectedImages([...selectedImages, product]);
     }
   };
-  /*   const onDragStart = () => {};
-  const onDragEnter = () => {};
-  const onDragEnd = () => {}; */
+  /* Product selection logic end */
+
+  /* Product Drag and Drop logic start */
+  const [galleryProducts, setGalleryProducts] = useState(products);
+  const [dragImage, setDragImage] = useState(null);
+
+  const handleDragStart = (products) => {
+    setDragImage(products);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDropProduct = (dropIndex) => {
+    if (dragImage) {
+      const updatedProducts = galleryProducts.filter(
+        (product) => product.id !== dragImage.id
+      );
+      updatedProducts.splice(dropIndex, 0, dragImage);
+      setGalleryProducts(updatedProducts);
+      setDragImage(null);
+    }
+  };
+  /* Product selection logic end */
+
+  /* delete selected Product start */
+  const deleteProduct = () => {
+    const updatedProduct = galleryProducts.filter(
+      (image) => !selectedImages.some((selected) => selected.id === image.id)
+    );
+    setGalleryProducts(updatedProduct);
+    setSelectedImages([]);
+  };
+  /* delete selected Product end */
+
+  /* Upload your image logic start */
+  const handleFileChange = (e) => {
+    const uploadedFiles = e.target.files;
+
+    const newImages = Array.from(uploadedFiles).map((file, index) => {
+      const id = galleryProducts.length + index + 1;
+      const thumbnail = URL.createObjectURL(file);
+
+      return { id, thumbnail };
+    });
+
+    setGalleryProducts([...galleryProducts, ...newImages]);
+  };
+  /* Upload your image logic end */
+
   return (
     <section>
       <div className="container mx-auto py-10 px-4">
@@ -31,12 +82,15 @@ const App = () => {
                 <h3 className="text-xl font-bold">Gallery</h3>
               )}
             </div>
-            <div
+            {/* delete files button start */}
+            <button
+              onClick={deleteProduct}
               className={`${
                 selectedImages.length >= 1 ? "block" : "hidden"
               } text-red-600 font-semibold`}>
               Delete files
-            </div>
+            </button>
+            {/* delete files button end */}
           </div>
           {/* header div end */}
 
@@ -47,9 +101,15 @@ const App = () => {
           {/* Images div start */}
           <div className="grid grid-cols-5 gap-5 bg-white py-3 px-5 rounded-b-md [&>*:first-child]:row-span-2 [&>*:first-child]:col-span-2">
             {/* image */}
-            {products.map((product) => {
+            {galleryProducts.map((product, index) => {
               return (
-                <div key={product.id}>
+                <div
+                  key={index}
+                  draggable
+                  index={index}
+                  onDragStart={() => handleDragStart(product)}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDropProduct(index)}>
                   <div
                     className={`relative ${
                       selectedImages.length >= 1
@@ -74,7 +134,21 @@ const App = () => {
             {/* image */}
 
             {/* file upload input start*/}
-            <div>Upload your file</div>
+            <div>
+              <div className="relative border-2 border-dashed rounded-md p-4 hover:bg-gray-50 transition-colors ease-linear">
+                <input
+                  type="file"
+                  multiple
+                  className="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
+                  title="Upload image to the gallery..."
+                  onChange={handleFileChange}
+                />
+                <div className="h-full w-full flex flex-col justify-center items-center gap-4">
+                  <BiImage />
+                  <span className="min-w-max">Add Images</span>
+                </div>
+              </div>
+            </div>
             {/* file upload input end*/}
           </div>
           {/* Images div end */}
