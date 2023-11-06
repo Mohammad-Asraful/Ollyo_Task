@@ -115,8 +115,8 @@ const App = () => {
                     className={`relative ${
                       selectedImages.find((photo) => photo.id === product.id)
                         ? "[&>input]:block opacity-40"
-                        : "[&>input]:hidden"
-                    } [&>input]:hover:block [&>img]:hover:opacity-30 rounded-md bg-gray-700`}>
+                        : "[&>input]:hidden [&>img]:hover:opacity-30"
+                    } [&>input]:hover:block rounded-md bg-gray-700`}>
                     <img
                       className="rounded-md border border-gray-400 cursor-move"
                       src={product.imageURL}
